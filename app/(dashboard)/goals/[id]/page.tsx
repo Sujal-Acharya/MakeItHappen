@@ -135,9 +135,9 @@ export default function GoalDetailPage() {
                 </Link>
                 <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl font-bold">{goal.title}</h1>
-                        <Badge variant={goal.status === 'completed' ? 'success' : goal.status === 'paused' ? 'warning' : 'default'}>
-                            {goal.status?.charAt(0).toUpperCase() + goal.status?.slice(1)}
+                        <h1 className="text-3xl font-bold">{(goal as any).title}</h1>
+                        <Badge variant={(goal as any).status === 'completed' ? 'success' : (goal as any).status === 'paused' ? 'warning' : 'default'}>
+                            {(goal as any).status?.charAt(0).toUpperCase() + (goal as any).status?.slice(1)}
                         </Badge>
                     </div>
                     {goal.description && (
@@ -363,3 +363,4 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
