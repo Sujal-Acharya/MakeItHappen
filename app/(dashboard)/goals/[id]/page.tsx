@@ -177,11 +177,11 @@ export default function GoalDetailPage() {
                                 <Progress value={(goal as any).progress || 0} className="h-3" />
                             </div>
 
-                            {goal.target_value && (
+                            {(goal as any).target_value && (
                                 <div className="flex items-center justify-between pt-4 border-t">
                                     <span className="text-sm text-muted-foreground">Current / Target</span>
                                     <span className="text-lg font-semibold">
-                                        {goal.current_value || 0} / {(goal as any).target_value}
+                                        {(goal as any).current_value || 0} / {(goal as any).target_value}
                                     </span>
                                 </div>
                             )}
@@ -302,7 +302,7 @@ export default function GoalDetailPage() {
                                 <Badge variant="secondary">{(goal as any).category}</Badge>
                             </div>
 
-                            {goal.start_date && (
+                            {(goal as any).start_date && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Start Date</div>
                                     <div className="flex items-center gap-2">
@@ -312,7 +312,7 @@ export default function GoalDetailPage() {
                                 </div>
                             )}
 
-                            {goal.target_date && (
+                            {(goal as any).target_date && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Target Date</div>
                                     <div className="flex items-center gap-2">
@@ -327,7 +327,7 @@ export default function GoalDetailPage() {
                                 <div className="text-sm">{new Date((goal as any).created_at || '').toLocaleDateString()}</div>
                             </div>
 
-                            {goal.updated_at && (
+                            {(goal as any).updated_at && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Last Updated</div>
                                     <div className="text-sm">{new Date((goal as any).updated_at).toLocaleDateString()}</div>
@@ -363,6 +363,7 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
 
 
 
