@@ -140,8 +140,8 @@ export default function GoalDetailPage() {
                             {(goal as any).status?.charAt(0).toUpperCase() + (goal as any).status?.slice(1)}
                         </Badge>
                     </div>
-                    {goal.description && (
-                        <p className="text-muted-foreground">{goal.description}</p>
+                    {(goal as any).description && (
+                        <p className="text-muted-foreground">{(goal as any).description}</p>
                     )}
                 </div>
                 <div className="flex gap-2">
@@ -363,4 +363,5 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
 
