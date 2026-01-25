@@ -172,16 +172,16 @@ export default function GoalDetailPage() {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium">Overall Progress</span>
-                                    <span className="text-2xl font-bold">{goal.progress || 0}%</span>
+                                    <span className="text-2xl font-bold">{(goal as any).progress || 0}%</span>
                                 </div>
-                                <Progress value={goal.progress || 0} className="h-3" />
+                                <Progress value={(goal as any).progress || 0} className="h-3" />
                             </div>
 
                             {goal.target_value && (
                                 <div className="flex items-center justify-between pt-4 border-t">
                                     <span className="text-sm text-muted-foreground">Current / Target</span>
                                     <span className="text-lg font-semibold">
-                                        {goal.current_value || 0} / {goal.target_value}
+                                        {goal.current_value || 0} / {(goal as any).target_value}
                                     </span>
                                 </div>
                             )}
@@ -299,7 +299,7 @@ export default function GoalDetailPage() {
                         <CardContent className="space-y-4">
                             <div>
                                 <div className="text-sm text-muted-foreground mb-1">Category</div>
-                                <Badge variant="secondary">{goal.category}</Badge>
+                                <Badge variant="secondary">{(goal as any).category}</Badge>
                             </div>
 
                             {goal.start_date && (
@@ -307,7 +307,7 @@ export default function GoalDetailPage() {
                                     <div className="text-sm text-muted-foreground mb-1">Start Date</div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        <span className="text-sm">{new Date(goal.start_date).toLocaleDateString()}</span>
+                                        <span className="text-sm">{new Date((goal as any).start_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             )}
@@ -317,20 +317,20 @@ export default function GoalDetailPage() {
                                     <div className="text-sm text-muted-foreground mb-1">Target Date</div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        <span className="text-sm">{new Date(goal.target_date).toLocaleDateString()}</span>
+                                        <span className="text-sm">{new Date((goal as any).target_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             )}
 
                             <div>
                                 <div className="text-sm text-muted-foreground mb-1">Created</div>
-                                <div className="text-sm">{new Date(goal.created_at || '').toLocaleDateString()}</div>
+                                <div className="text-sm">{new Date((goal as any).created_at || '').toLocaleDateString()}</div>
                             </div>
 
                             {goal.updated_at && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Last Updated</div>
-                                    <div className="text-sm">{new Date(goal.updated_at).toLocaleDateString()}</div>
+                                    <div className="text-sm">{new Date((goal as any).updated_at).toLocaleDateString()}</div>
                                 </div>
                             )}
                         </CardContent>
@@ -363,5 +363,6 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
 
 
