@@ -15,6 +15,7 @@ import { ArrowLeft, Calendar, Target, TrendingUp, Edit, Trash2, Plus, X } from '
 import Link from 'next/link'
 import { useDeleteGoal } from '@/lib/hooks/useGoals'
 import { useTasks, useCreateTask, useToggleTask, useDeleteTask } from '@/lib/hooks/useTasks'
+import { Goal, Task } from '@/types/database.types'
 import toast from 'react-hot-toast'
 
 export default function GoalDetailPage() {
@@ -28,7 +29,7 @@ export default function GoalDetailPage() {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [isAddingTask, setIsAddingTask] = useState(false)
 
-    const { data: goal, isLoading: goalLoading } = useQuery({
+    const { data: goal, isLoading: goalLoading } = useQuery<Goal>({
         queryKey: ['goal', goalId],
         queryFn: async () => {
             const { data, error } = await supabase
@@ -38,11 +39,11 @@ export default function GoalDetailPage() {
                 .single()
 
             if (error) throw error
-            return data
+            return data as Goal
         },
     })
 
-    const { data: tasks, isLoading: tasksLoading } = useTasks(goalId)
+    const { data: tasks = [], isLoading: tasksLoading } = useTasks(goalId)
     const createTask = useCreateTask()
     const toggleTask = useToggleTask()
     const deleteTask = useDeleteTask()
@@ -121,8 +122,20 @@ export default function GoalDetailPage() {
         )
     }
 
-    const completedTasks = tasks?.filter(t => t.completed).length || 0
-    const totalTasks = tasks?.length || 0
+    const completedTasks = tasks.filter(t => t.completed).length
+    const totalTasks = tasks.length
+
+    // Helper function for status badge variant
+    const getStatusVariant = (status: string) => {
+        switch (status) {
+            case 'completed':
+                return 'success' as const
+            case 'paused':
+                return 'warning' as const
+            default:
+                return 'default' as const
+        }
+    }
 
     return (
         <div className="p-6 space-y-6 animate-fade-in">
@@ -135,13 +148,13 @@ export default function GoalDetailPage() {
                 </Link>
                 <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl font-bold">{(goal as any).title}</h1>
-                        <Badge variant={(goal as any).status === 'completed' ? 'success' : (goal as any).status === 'paused' ? 'warning' : 'default'}>
-                            {(goal as any).status?.charAt(0).toUpperCase() + (goal as any).status?.slice(1)}
+                        <h1 className="text-3xl font-bold">{goal.title}</h1>
+                        <Badge variant={getStatusVariant(goal.status)}>
+                            {goal.status.charAt(0).toUpperCase() + goal.status.slice(1)}
                         </Badge>
                     </div>
-                    {(goal as any).description && (
-                        <p className="text-muted-foreground">{(goal as any).description}</p>
+                    {goal.description && (
+                        <p className="text-muted-foreground">{goal.description}</p>
                     )}
                 </div>
                 <div className="flex gap-2">
@@ -172,16 +185,16 @@ export default function GoalDetailPage() {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium">Overall Progress</span>
-                                    <span className="text-2xl font-bold">{(goal as any).progress || 0}%</span>
+                                    <span className="text-2xl font-bold">{goal.progress}%</span>
                                 </div>
-                                <Progress value={(goal as any).progress || 0} className="h-3" />
+                                <Progress value={goal.progress} className="h-3" />
                             </div>
 
-                            {(goal as any).target_value && (
+                            {goal.target_value && (
                                 <div className="flex items-center justify-between pt-4 border-t">
                                     <span className="text-sm text-muted-foreground">Current / Target</span>
                                     <span className="text-lg font-semibold">
-                                        {(goal as any).current_value || 0} / {(goal as any).target_value}
+                                        {goal.current_value} / {goal.target_value}
                                     </span>
                                 </div>
                             )}
@@ -238,7 +251,7 @@ export default function GoalDetailPage() {
                                         <Skeleton key={i} className="h-10 w-full" />
                                     ))}
                                 </div>
-                            ) : tasks && tasks.length > 0 ? (
+                            ) : tasks.length > 0 ? (
                                 <div className="space-y-2">
                                     {tasks.map((task) => (
                                         <div
@@ -246,8 +259,8 @@ export default function GoalDetailPage() {
                                             className="flex items-center gap-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors group"
                                         >
                                             <Checkbox
-                                                checked={task.completed || false}
-                                                onCheckedChange={() => handleToggleTask(task.id, task.completed || false)}
+                                                checked={task.completed}
+                                                onCheckedChange={() => handleToggleTask(task.id, task.completed)}
                                             />
                                             <span className={`flex-1 ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
                                                 {task.title}
@@ -299,38 +312,38 @@ export default function GoalDetailPage() {
                         <CardContent className="space-y-4">
                             <div>
                                 <div className="text-sm text-muted-foreground mb-1">Category</div>
-                                <Badge variant="secondary">{(goal as any).category}</Badge>
+                                <Badge variant="secondary">{goal.category}</Badge>
                             </div>
 
-                            {(goal as any).start_date && (
+                            {goal.start_date && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Start Date</div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        <span className="text-sm">{new Date((goal as any).start_date).toLocaleDateString()}</span>
+                                        <span className="text-sm">{new Date(goal.start_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             )}
 
-                            {(goal as any).target_date && (
+                            {goal.target_date && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Target Date</div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        <span className="text-sm">{new Date((goal as any).target_date).toLocaleDateString()}</span>
+                                        <span className="text-sm">{new Date(goal.target_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             )}
 
                             <div>
                                 <div className="text-sm text-muted-foreground mb-1">Created</div>
-                                <div className="text-sm">{new Date((goal as any).created_at || '').toLocaleDateString()}</div>
+                                <div className="text-sm">{new Date(goal.created_at).toLocaleDateString()}</div>
                             </div>
 
-                            {(goal as any).updated_at && (
+                            {goal.updated_at && (
                                 <div>
                                     <div className="text-sm text-muted-foreground mb-1">Last Updated</div>
-                                    <div className="text-sm">{new Date((goal as any).updated_at).toLocaleDateString()}</div>
+                                    <div className="text-sm">{new Date(goal.updated_at).toLocaleDateString()}</div>
                                 </div>
                             )}
                         </CardContent>
@@ -363,7 +376,3 @@ export default function GoalDetailPage() {
         </div>
     )
 }
-
-
-
-
