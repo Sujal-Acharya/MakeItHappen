@@ -15,8 +15,37 @@ import { ArrowLeft, Calendar, Target, TrendingUp, Edit, Trash2, Plus, X } from '
 import Link from 'next/link'
 import { useDeleteGoal } from '@/lib/hooks/useGoals'
 import { useTasks, useCreateTask, useToggleTask, useDeleteTask } from '@/lib/hooks/useTasks'
-import { Goal, Task } from '@/types/database.types'
 import toast from 'react-hot-toast'
+
+// Define types inline
+interface Goal {
+  id: string
+  user_id: string
+  title: string
+  description: string | null
+  category: string
+  progress: number
+  status: 'active' | 'completed' | 'paused' | 'archived'
+  target_value: number | null
+  current_value: number
+  start_date: string
+  target_date: string | null
+  created_at: string
+  updated_at: string
+}
+
+interface Task {
+  id: string
+  goal_id: string
+  title: string
+  description: string | null
+  completed: boolean
+  completed_at: string | null
+  due_date: string | null
+  priority: 'low' | 'medium' | 'high'
+  created_at: string
+  updated_at: string
+}
 
 export default function GoalDetailPage() {
     const params = useParams()
@@ -122,7 +151,7 @@ export default function GoalDetailPage() {
         )
     }
 
-    const completedTasks = tasks.filter(t => t.completed).length
+    const completedTasks = tasks.filter((t: any) => t.completed).length
     const totalTasks = tasks.length
 
     // Helper function for status badge variant
@@ -253,7 +282,7 @@ export default function GoalDetailPage() {
                                 </div>
                             ) : tasks.length > 0 ? (
                                 <div className="space-y-2">
-                                    {tasks.map((task) => (
+                                    {tasks.map((task: any) => (
                                         <div
                                             key={task.id}
                                             className="flex items-center gap-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors group"
