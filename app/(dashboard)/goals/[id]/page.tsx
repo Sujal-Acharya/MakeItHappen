@@ -153,7 +153,7 @@ export default function GoalDetailPage() {
     const completedTasks = tasks.filter((t: any) => t.completed).length
     const totalTasks = tasks.length
 
-    // Helper function for status badge variant
+    // status badge variant
     const getStatusVariant = (status: string) => {
         switch (status) {
             case 'completed':
@@ -404,4 +404,5 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
 
