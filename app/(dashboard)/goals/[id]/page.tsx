@@ -17,7 +17,7 @@ import { useDeleteGoal } from '@/lib/hooks/useGoals'
 import { useTasks, useCreateTask, useToggleTask, useDeleteTask } from '@/lib/hooks/useTasks'
 import toast from 'react-hot-toast'
 
-// Define types inline
+
 interface Goal {
   id: string
   user_id: string
@@ -105,7 +105,7 @@ export default function GoalDetailPage() {
             completed: !completed,
         })
 
-        // Refresh goal to show updated progress
+        
         queryClient.invalidateQueries({ queryKey: ['goal', goalId] })
     }
 
@@ -114,7 +114,6 @@ export default function GoalDetailPage() {
 
         await deleteTask.mutateAsync({ id: taskId, goalId })
 
-        // Refresh goal to show updated progress
         queryClient.invalidateQueries({ queryKey: ['goal', goalId] })
     }
 
@@ -405,3 +404,4 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
