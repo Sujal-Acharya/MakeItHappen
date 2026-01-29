@@ -83,7 +83,7 @@ export default function GoalsPage() {
                                             {goal.category}
                                         </Badge>
                                         <Badge variant={getStatusVariant(goal.status || 'active') as any}>
-                                            {goal.status}
+                                            {goal.status ? goal.status.charAt(0).toUpperCase() + goal.status.slice(1) : 'Active'}
                                         </Badge>
                                     </div>
                                     <CardTitle className="text-xl group-hover:text-primary transition-colors">
@@ -129,3 +129,4 @@ export default function GoalsPage() {
         </div>
     )
 }
+
