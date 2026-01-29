@@ -313,7 +313,7 @@ export default function GoalDetailPage() {
                         </CardContent>
                     </Card>
 
-                    {/* Progress Chart Placeholder */}
+                    {/* Progress Chart Report */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Progress Over Time</CardTitle>
@@ -404,3 +404,4 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
