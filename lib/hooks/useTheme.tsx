@@ -32,12 +32,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         document.documentElement.classList.toggle('dark', newTheme === 'dark')
     }
 
-    if (!mounted) {
-        return <>{children}</>
-    }
-
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            {/* Prevent flash of wrong theme by hiding content until mounted, 
+                OR accept mismatch. Better pattern for Next.js app router: 
+                always provide context, but handle hydration. */}
             {children}
         </ThemeContext.Provider>
     )
