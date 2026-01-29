@@ -272,7 +272,7 @@ export default function GoalDetailPage() {
                                 </form>
                             )}
 
-                            {/* Tasks List */}
+                            {/* Tasks- List */}
                             {tasksLoading ? (
                                 <div className="space-y-2">
                                     {[1, 2, 3].map(i => (
@@ -404,5 +404,3 @@ export default function GoalDetailPage() {
         </div>
     )
 }
-
-
