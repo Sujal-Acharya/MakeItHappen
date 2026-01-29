@@ -17,34 +17,33 @@ import { useDeleteGoal } from '@/lib/hooks/useGoals'
 import { useTasks, useCreateTask, useToggleTask, useDeleteTask } from '@/lib/hooks/useTasks'
 import toast from 'react-hot-toast'
 
-
 interface Goal {
-  id: string
-  user_id: string
-  title: string
-  description: string | null
-  category: string
-  progress: number
-  status: 'active' | 'completed' | 'paused' | 'archived'
-  target_value: number | null
-  current_value: number
-  start_date: string
-  target_date: string | null
-  created_at: string
-  updated_at: string
+    id: string
+    user_id: string
+    title: string
+    description: string | null
+    category: string
+    progress: number
+    status: 'active' | 'completed' | 'paused' | 'archived'
+    target_value: number | null
+    current_value: number
+    start_date: string
+    target_date: string | null
+    created_at: string
+    updated_at: string
 }
 
 interface Task {
-  id: string
-  goal_id: string
-  title: string
-  description: string | null
-  completed: boolean
-  completed_at: string | null
-  due_date: string | null
-  priority: 'low' | 'medium' | 'high'
-  created_at: string
-  updated_at: string
+    id: string
+    goal_id: string
+    title: string
+    description: string | null
+    completed: boolean
+    completed_at: string | null
+    due_date: string | null
+    priority: 'low' | 'medium' | 'high'
+    created_at: string
+    updated_at: string
 }
 
 export default function GoalDetailPage() {
@@ -72,7 +71,7 @@ export default function GoalDetailPage() {
         },
     })
 
-    const { data: tasks = [], isLoading: tasksLoading } = useTasks(goalId)
+    const { data: tasks, isLoading: tasksLoading } = useTasks(goalId)
     const createTask = useCreateTask()
     const toggleTask = useToggleTask()
     const deleteTask = useDeleteTask()
@@ -105,7 +104,7 @@ export default function GoalDetailPage() {
             completed: !completed,
         })
 
-        
+        // Refresh goal to show updated progress
         queryClient.invalidateQueries({ queryKey: ['goal', goalId] })
     }
 
@@ -114,6 +113,7 @@ export default function GoalDetailPage() {
 
         await deleteTask.mutateAsync({ id: taskId, goalId })
 
+        // Refresh goal to show updated progress
         queryClient.invalidateQueries({ queryKey: ['goal', goalId] })
     }
 
@@ -150,20 +150,8 @@ export default function GoalDetailPage() {
         )
     }
 
-    const completedTasks = tasks.filter((t: any) => t.completed).length
-    const totalTasks = tasks.length
-
-    // status badge variant for gamification to engage users 
-    const getStatusVariant = (status: string) => {
-        switch (status) {
-            case 'completed':
-                return 'success' as const
-            case 'paused':
-                return 'warning' as const
-            default:
-                return 'default' as const
-        }
-    }
+    const completedTasks = tasks?.filter(t => t.completed).length || 0
+    const totalTasks = tasks?.length || 0
 
     return (
         <div className="p-6 space-y-6 animate-fade-in">
@@ -177,7 +165,7 @@ export default function GoalDetailPage() {
                 <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                         <h1 className="text-3xl font-bold">{goal.title}</h1>
-                        <Badge variant={getStatusVariant(goal.status)}>
+                        <Badge variant={goal.status === 'completed' ? 'success' : goal.status === 'paused' ? 'warning' : 'default'}>
                             {goal.status.charAt(0).toUpperCase() + goal.status.slice(1)}
                         </Badge>
                     </div>
@@ -213,16 +201,16 @@ export default function GoalDetailPage() {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium">Overall Progress</span>
-                                    <span className="text-2xl font-bold">{goal.progress}%</span>
+                                    <span className="text-2xl font-bold">{goal.progress || 0}%</span>
                                 </div>
-                                <Progress value={goal.progress} className="h-3" />
+                                <Progress value={goal.progress || 0} className="h-3" />
                             </div>
 
                             {goal.target_value && (
                                 <div className="flex items-center justify-between pt-4 border-t">
                                     <span className="text-sm text-muted-foreground">Current / Target</span>
                                     <span className="text-lg font-semibold">
-                                        {goal.current_value} / {goal.target_value}
+                                        {goal.current_value || 0} / {goal.target_value}
                                     </span>
                                 </div>
                             )}
@@ -279,16 +267,16 @@ export default function GoalDetailPage() {
                                         <Skeleton key={i} className="h-10 w-full" />
                                     ))}
                                 </div>
-                            ) : tasks.length > 0 ? (
+                            ) : tasks && tasks.length > 0 ? (
                                 <div className="space-y-2">
-                                    {tasks.map((task: any) => (
+                                    {tasks.map((task) => (
                                         <div
                                             key={task.id}
                                             className="flex items-center gap-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors group"
                                         >
                                             <Checkbox
-                                                checked={task.completed}
-                                                onCheckedChange={() => handleToggleTask(task.id, task.completed)}
+                                                checked={task.completed || false}
+                                                onCheckedChange={() => handleToggleTask(task.id, task.completed || false)}
                                             />
                                             <span className={`flex-1 ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
                                                 {task.title}
@@ -365,7 +353,7 @@ export default function GoalDetailPage() {
 
                             <div>
                                 <div className="text-sm text-muted-foreground mb-1">Created</div>
-                                <div className="text-sm">{new Date(goal.created_at).toLocaleDateString()}</div>
+                                <div className="text-sm">{new Date(goal.created_at || '').toLocaleDateString()}</div>
                             </div>
 
                             {goal.updated_at && (
@@ -404,6 +392,3 @@ export default function GoalDetailPage() {
         </div>
     )
 }
-
-
-
