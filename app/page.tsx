@@ -46,6 +46,7 @@ interface Task {
     created_at: string
     updated_at: string
 }
+//home page or landing page for the deployment
 
 export default function GoalDetailPage() {
     const params = useParams()
@@ -404,4 +405,5 @@ export default function GoalDetailPage() {
         </div>
     )
 }
+
 
