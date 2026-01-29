@@ -41,8 +41,9 @@ export default function ProfilePage() {
         try {
             const { error } = await supabase
                 .from('profiles')
+                // @ts-ignore
                 .update({ name, updated_at: new Date().toISOString() })
-                .eq('id', user?.id)
+                .eq('id', user?.id as string)
 
             if (error) throw error
 
