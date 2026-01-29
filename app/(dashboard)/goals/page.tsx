@@ -82,7 +82,7 @@ export default function GoalsPage() {
                                         <Badge variant="outline" className="capitalize">
                                             {goal.category}
                                         </Badge>
-                                        <Badge variant={getStatusVariant(goal.status) as any}>
+                                        <Badge variant={getStatusVariant(goal.status || 'active') as any}>
                                             {goal.status}
                                         </Badge>
                                     </div>
