@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Deep blue/black background inspired by the reference */
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    /* Vibrant Blue matching the 'Trust' and 'Secure' vibes */
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Teal/Cyan secondary for the 'Compliant' text vibes */
+    --secondary: 172 66% 50%;
+    --secondary-foreground: 224 71% 4%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 75.1%;
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+
+  /* Subtle grid pattern for the background */
+  .bg-grid {
+    background-size: 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
+  /* Mask to fade out the grid */
+  .bg-grid-mask {
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 50%, #fae8ff 100%);
+  }
+
+  .dark .gradient-bg {
+    /* Deeper, richer gradient for dark mode */
+    background: radial-gradient(circle at top center, #172554 0%, #030712 60%);
+  }
+
+  .gradient-text {
+    /* White to Blue transition */
+    @apply bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-alt {
+    /* Purple/Pink variation */
+    @apply bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/30;
+  }
+
+  .dark .card-hover {
+    @apply hover:shadow-primary/20 hover:bg-accent/50;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent);
+    background-size: 200% 100%;
+  }
+
+  .dark .shimmer {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent);
+    background-size: 200% 100%;
+  }
+
+  /* Premium glass effect */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  }
+
+  .dark .glass {
+    /* Darker, flatter glass for fintech look */
+    @apply bg-[#0B1121]/80 backdrop-blur-xl border border-white/5;
+  }
+
+  /* Premium gradient borders */
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+      linear-gradient(135deg, #3b82f6, #2dd4bf, #a855f7) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Animated gradient background */
+  @keyframes gradient-shift {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animated-gradient {
+    background: linear-gradient(-45deg,
+        #3b82f6,
+        #2dd4bf,
+        #a855f7,
+        #06b6d4);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  /* Premium shadows */
+  .shadow-premium {
+    box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.3),
+      0 0 0 1px rgba(59, 130, 246, 0.1);
+  }
+
+  .dark .shadow-premium {
+    box-shadow: 0 20px 80px -20px rgba(59, 130, 246, 0.3),
+      0 0 0 1px rgba(59, 130, 246, 0.2);
+  }
+}
