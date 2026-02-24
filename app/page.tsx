@@ -19,7 +19,7 @@ export default function HomePage() {
                         <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center shadow-lg shadow-primary/20">
                             <Target className="h-5 w-5 text-white" />
                         </div>
-                        <span className="font-bold text-xl tracking-tight">MakeItHappen [SYNC_CHECK]</span>
+                        <span className="font-bold text-xl tracking-tight">MakeItHappen</span>
                     </div>
                     <div className="flex items-center gap-4">
                         <Link href="/login">
@@ -231,3 +231,4 @@ export default function HomePage() {
         </div>
     );
 }
+
